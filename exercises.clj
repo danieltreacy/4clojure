@@ -28,6 +28,7 @@
   [(take n coll) (drop n coll)])
 
 (defn half-truth [& args]
+  "Returns true if some of the parameters are true but if not all are true"
   (let [counts (group-by true? args)
         true-count (count (get counts true))]
     (if (= true-count (count args))
@@ -35,12 +36,14 @@
       (boolean (some true? args)))))
 
 (defn gcd [x y]
+  "Calculates the greatest common divisor of two numbers"
   (let [rm (rem x y)]
     (if (= rm 0)
       y
       (gcd y rm))))
 
 (defn cartesian [coll1 coll2]
+  "Return the cartesian product of two collections"
   (into #{} (for [x coll1 y coll2]
               [x y])))
 
@@ -48,22 +51,8 @@
   "An implementation of group-by"
   (->> (partition-by f coll) (map #(apply vector %)) (reduce #(assoc % (f (first %2)) %2) {})))
 
-(defn groupby [f coll]
-  (reduce (fn [ret x]
-            (let [k (f x)]
-              (assoc ret k (conj (get ret k []) x))))
-          {} coll))
-
-(defn pascal-triangle [row]
-  "Returns the nth row of Pascal's triangle"
-  (loop [x 0
-         triangle [[1]]]
-    (if (= x row)
-      triangle
-      (recur (inc x)
-             (conj triangle (vector 1 1))))))
-
 (defn pascal [size]
+  "Return the nth row [size] of Pascal's Triangle"
   (loop [x 1 row [1]]
     (if (= x size)
       (vec row)
