@@ -61,3 +61,17 @@
 (defn symmetric-diff [set1 set2]
   "Returns the symmetric difference between two sets"
   (into #{} (concat (difference set1 set2) (difference set2 set1))))
+
+(defn read-binary-number [n]
+  "Convert a string representation of a binary number to its base 10 form"
+  (let [integer-seq (map #(Character/digit % 10) n)
+        powers (reverse (range 0 (count integer-seq)))]
+    (reduce + (map #(if-not (zero? %) (int (Math/pow 2 %2)) 0) integer-seq powers))))
+
+(defn infix [arg & more]
+  (loop [rem more
+         result arg]
+    (println rem)
+    (if (nil? (second rem))
+      result
+      (recur (rest rem) ((first rem) result (second rem))))))
