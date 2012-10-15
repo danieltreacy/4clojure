@@ -49,7 +49,9 @@
 
 (defn mygroupby [f coll]
   "An implementation of group-by"
-  (->> (partition-by f coll) (map #(apply vector %)) (reduce #(assoc % (f (first %2)) %2) {})))
+  (->> (partition-by f coll)
+       (map #(apply vector %))
+       (reduce #(assoc % (f (first %2)) %2) {})))
 
 (defn pascal [size]
   "Return the nth row [size] of Pascal's Triangle"
@@ -66,12 +68,22 @@
   "Convert a string representation of a binary number to its base 10 form"
   (let [integer-seq (map #(Character/digit % 10) n)
         powers (reverse (range 0 (count integer-seq)))]
-    (reduce + (map #(if-not (zero? %) (int (Math/pow 2 %2)) 0) integer-seq powers))))
+    (reduce + (map #(if-not (zero? %)
+                      (int (Math/pow 2 %2))
+                      0)
+                   integer-seq powers))))
 
 (defn infix [arg & more]
+  "Implements an infix notation for a variable number of arguments"
   (loop [rem more
          result arg]
     (println rem)
+    (println result)
     (if (nil? (second rem))
       result
-      (recur (rest rem) ((first rem) result (second rem))))))
+      (recur (drop 2 rem) ((first rem) result (second rem))))))
+
+(defn binary-tree [s]
+  "Checks whether the given sequence represents a binary-tree"
+  (defn is-binary [x] (= (count x) 3))
+  (and (is-binary s) (apply is-binary (filter seq? s))))
